@@ -5,7 +5,7 @@
   </div>
   <filter
     *ngFor="let filter of filters"
-    [filterName]="filter.filterName"
+    [filterName]="filter.name"
     [options]="filter.options"
     [formGroup]="filterForm"
     [valueField]="valueField"
