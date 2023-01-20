@@ -7,9 +7,9 @@
         <input
           type="checkbox"
           (change)="toggleChecked($event, option)"
-          [checked]="formGroup.get(filterName)?.value.includes(option.label)"
+          [checked]="formGroup.get(filterName)?.value.includes(option.value)"
         />
-        {{ option.label }}
+        {{ option.value }}
       </label>
     </li>
   </ul>

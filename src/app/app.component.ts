@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { delay, forkJoin, map, of } from 'rxjs';
 import { IFilter } from './components/filter-group/filter-group.component';
 
 @Component({
@@ -7,50 +8,43 @@ import { IFilter } from './components/filter-group/filter-group.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  filters: IFilter[] = [
+  companies$ = of([
     {
-      filterName: 'Company',
-      options: [
-        {
-          id: 1,
-          label: 'Google',
-        },
-        {
-          id: 2,
-          label: 'Amazon',
-        },
-        {
-          id: 3,
-          label: 'Facebook',
-        },
-        {
-          id: 4,
-          label: 'Apple',
-        },
-      ],
+      id: 1,
+      value: 'Google',
     },
     {
-      filterName: 'State',
-      options: [
-        {
-          id: 1,
-          label: 'Alabama',
-        },
-        {
-          id: 2,
-          label: 'Colorado',
-        },
-        {
-          id: 3,
-          label: 'Florida',
-        },
-        {
-          id: 4,
-          label: 'Indiana',
-        },
-      ],
+      id: 2,
+      value: 'Amazon',
     },
-  ];
+    {
+      id: 3,
+      value: 'Facebook',
+    },
+    {
+      id: 4,
+      value: 'Apple',
+    },
+  ]).pipe(delay(1000));
+
+  people$ = of([
+    { id: 1, value: 'Tyler' },
+    { id: 2, value: 'Alex' },
+    { id: 3, value: 'Steph' },
+  ]).pipe(delay(3000));
+
+  filters$ = forkJoin([
+    this.companies$.pipe(
+      map((options) => {
+        return { filterName: 'Company', options };
+      })
+    ),
+    this.people$.pipe(
+      map((options) => {
+        return { filterName: 'Person', options };
+      })
+    ),
+  ]);
 
   filtersChange(e: any) {
     console.log(e);

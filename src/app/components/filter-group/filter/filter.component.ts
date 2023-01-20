@@ -16,7 +16,7 @@ export class FilterComponent implements OnInit {
   searchTerm = '';
   get searchedOptions() {
     return this.options.filter((option) =>
-      option.label
+      option.value
         .trim()
         .toLowerCase()
         .includes(this.searchTerm.trim().toLowerCase())
@@ -29,7 +29,7 @@ export class FilterComponent implements OnInit {
 
   toggleChecked(
     e: Event,
-    option: { id: number | string; label: string; [key: string]: any }
+    option: { id: number | string; value: string; [key: string]: any }
   ) {
     const checked = (e.target as HTMLInputElement).checked;
     const filtersArr = this.formGroup.get(this.filterName);

@@ -5,7 +5,7 @@ export interface IFilter {
   filterName: string;
   options: {
     id: number | string;
-    label: string;
+    value: string;
   }[];
 }
 

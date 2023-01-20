@@ -1,5 +1,7 @@
-<filter-group
-  [filters]="filters"
-  (filtersChange)="filtersChange($event)"
-  valueField="id"
-></filter-group>
+<ng-container *ngIf="filters$ | async as filters">
+  <filter-group
+    [filters]="filters"
+    (filtersChange)="filtersChange($event)"
+    valueField="id"
+  ></filter-group>
+</ng-container>
