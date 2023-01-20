@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 export interface IFilter {
-  filterName: string;
+  name: string;
   options: {
     id: number | string;
     value: string;
@@ -26,7 +26,7 @@ export class FilterGroupComponent implements OnInit {
   ngOnInit() {
     this.filterForm = new FormGroup(
       this.filters.reduce((acc, curr) => {
-        acc[curr.filterName] = new FormControl([], { nonNullable: true });
+        acc[curr.name] = new FormControl([], { nonNullable: true });
         return acc;
       }, {} as { [key: string]: any })
     );

@@ -36,12 +36,12 @@ export class AppComponent {
   filters$ = forkJoin([
     this.companies$.pipe(
       map((options) => {
-        return { filterName: 'Company', options };
+        return { name: 'Company', options };
       })
     ),
     this.people$.pipe(
       map((options) => {
-        return { filterName: 'Person', options };
+        return { name: 'Person', options };
       })
     ),
   ]);
