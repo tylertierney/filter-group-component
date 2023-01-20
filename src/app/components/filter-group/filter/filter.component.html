@@ -1,0 +1,16 @@
+<button (click)="this.isOpen = !this.isOpen">{{ filterName }}</button>
+<div [ngClass]="{ open: isOpen }">
+  <input [(ngModel)]="searchTerm" />
+  <ul>
+    <li *ngFor="let option of searchedOptions">
+      <label>
+        <input
+          type="checkbox"
+          (change)="toggleChecked($event, option)"
+          [checked]="formGroup.get(filterName)?.value.includes(option.label)"
+        />
+        {{ option.label }}
+      </label>
+    </li>
+  </ul>
+</div>
