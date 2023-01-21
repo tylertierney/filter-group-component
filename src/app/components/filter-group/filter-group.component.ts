@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 export interface IFilter {
   name: string;
@@ -34,5 +35,8 @@ export class FilterGroupComponent implements OnInit {
     this.filterForm.valueChanges.subscribe(() =>
       this.filtersChange.emit(this.filterForm.value)
     );
+
+    // this.filterForm.valueChanges.subscribe(this.filtersChange.emit);
+    // this.filtersChange = this.filterForm.valueChanges;
   }
 }

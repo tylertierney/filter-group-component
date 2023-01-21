@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { delay, forkJoin, map, of } from 'rxjs';
-import { IFilter } from './components/filter-group/filter-group.component';
+import { FormControl, FormGroup } from '@angular/forms';
+import { map, of, zip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,15 +25,15 @@ export class AppComponent {
       id: 4,
       value: 'Apple',
     },
-  ]).pipe(delay(1000));
+  ]);
 
   people$ = of([
     { id: 1, value: 'Tyler' },
     { id: 2, value: 'Alex' },
     { id: 3, value: 'Steph' },
-  ]).pipe(delay(3000));
+  ]);
 
-  filters$ = forkJoin([
+  filters$ = zip([
     this.companies$.pipe(
       map((options) => {
         return { name: 'Company', options };
@@ -46,7 +46,12 @@ export class AppComponent {
     ),
   ]);
 
-  filtersChange(e: any) {
-    console.log(e);
+  randomForm = new FormGroup({
+    age: new FormControl(19),
+    weight: new FormControl(150),
+  });
+
+  filtersChange(changes: any) {
+    console.log({ ...this.randomForm.value, ...changes });
   }
 }

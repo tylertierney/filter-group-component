@@ -6,8 +6,8 @@
       <label>
         <input
           type="checkbox"
-          (change)="toggleChecked($event, option)"
-          [checked]="formGroup.get(filterName)?.value.includes(option.value)"
+          (change)="toggleValue(option.value)"
+          [checked]="isSelected(option.value)"
         />
         {{ option.value }}
       </label>

@@ -9,6 +9,7 @@
     [options]="filter.options"
     [formGroup]="filterForm"
     [valueField]="valueField"
+    [formControlName]="filter.name"
   ></filter>
 </form>
 <pre>{{ filterForm.value | json }}</pre>

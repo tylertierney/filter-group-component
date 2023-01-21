@@ -1,16 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IFilter } from '../filter-group.component';
 
 @Component({
   selector: 'filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: FilterComponent,
+    },
+  ],
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, ControlValueAccessor {
   @Input() filterName: string;
   @Input() options: IFilter['options'];
-  @Input() formGroup: FormGroup;
   @Input() valueField: string;
   isOpen = false;
   searchTerm = '';
@@ -27,27 +33,40 @@ export class FilterComponent implements OnInit {
 
   ngOnInit() {}
 
-  toggleChecked(
-    e: Event,
-    option: { id: number | string; value: string; [key: string]: any }
-  ) {
-    const checked = (e.target as HTMLInputElement).checked;
-    const filtersArr = this.formGroup.get(this.filterName);
-    if (!filtersArr) return;
-    const curr = filtersArr.value;
+  value: string[] = [];
 
-    let itemForResultingArray = option;
-    if (this.valueField) itemForResultingArray = option[this.valueField];
+  onChange = (value: string[]) => {};
+  onTouch = () => {};
 
-    if (checked) {
-      filtersArr.setValue([...curr, itemForResultingArray]);
+  writeValue(value: string[]): void {
+    this.value = value;
+  }
+
+  registerOnChange(fn: (value: string[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouch = fn;
+  }
+
+  toggleValue(selectedValue: string) {
+    const index = this.value.indexOf(selectedValue);
+
+    if (index > -1) {
+      this.value = [
+        ...this.value.slice(0, index),
+        ...this.value.slice(index + 1),
+      ];
     } else {
-      filtersArr.setValue(
-        curr.filter(
-          (itemCurrentlyInArray: unknown) =>
-            itemCurrentlyInArray !== itemForResultingArray
-        )
-      );
+      this.value = [...this.value, selectedValue];
     }
+
+    this.onChange(this.value);
+    this.onTouch();
+  }
+
+  isSelected(valueToCheck: string) {
+    return this.value.includes(valueToCheck);
   }
 }
