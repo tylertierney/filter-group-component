@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IFilter } from '../filter-group.component';
+import { IFilter, IFilterOption } from '../filter-group.component';
 
 @Component({
   selector: 'filter',
@@ -16,8 +16,8 @@ import { IFilter } from '../filter-group.component';
 })
 export class FilterComponent implements OnInit, ControlValueAccessor {
   @Input() filterName: string;
-  @Input() options: IFilter['options'];
-  @Input() valueField: string;
+  @Input() options: IFilterOption[];
+  @Input() valueField: keyof IFilterOption;
   isOpen = false;
   searchTerm = '';
   get searchedOptions() {
@@ -33,16 +33,18 @@ export class FilterComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {}
 
-  value: string[] = [];
+  value: Array<string | number | IFilterOption> = [];
 
-  onChange = (value: string[]) => {};
+  onChange = (value: Array<string | number | IFilterOption>) => {};
   onTouch = () => {};
 
   writeValue(value: string[]): void {
     this.value = value;
   }
 
-  registerOnChange(fn: (value: string[]) => void): void {
+  registerOnChange(
+    fn: (value: Array<string | number | IFilterOption>) => void
+  ): void {
     this.onChange = fn;
   }
 
@@ -50,7 +52,7 @@ export class FilterComponent implements OnInit, ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  toggleValue(selectedValue: string) {
+  toggleValue(selectedValue: IFilterOption | string | number) {
     const index = this.value.indexOf(selectedValue);
 
     if (index > -1) {
@@ -66,7 +68,7 @@ export class FilterComponent implements OnInit, ControlValueAccessor {
     this.onTouch();
   }
 
-  isSelected(valueToCheck: string) {
+  isSelected(valueToCheck: IFilterOption | string | number) {
     return this.value.includes(valueToCheck);
   }
 }

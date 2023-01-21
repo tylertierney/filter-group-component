@@ -1,7 +1,9 @@
 <form [formGroup]="filterForm">
   <div>
     <span>Filter</span>
-    <button (click)="filterForm.reset()">Reset</button>
+    <button (click)="filterForm.reset()" [disabled]="!filterForm.dirty">
+      Reset
+    </button>
   </div>
   <filter
     *ngFor="let filter of filters"

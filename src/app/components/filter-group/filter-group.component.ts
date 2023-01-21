@@ -2,12 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+export interface IFilterOption {
+  id: number | string;
+  value: string;
+}
+
 export interface IFilter {
   name: string;
-  options: {
-    id: number | string;
-    value: string;
-  }[];
+  options: IFilterOption[];
 }
 
 @Component({
@@ -18,7 +20,7 @@ export interface IFilter {
 export class FilterGroupComponent implements OnInit {
   @Output() filtersChange = new EventEmitter<{ [key: string]: any }>();
   @Input() filters: IFilter[];
-  @Input() valueField: string;
+  @Input() valueField: keyof IFilterOption;
 
   constructor() {}
 
@@ -32,9 +34,9 @@ export class FilterGroupComponent implements OnInit {
       }, {} as { [key: string]: any })
     );
 
-    this.filterForm.valueChanges.subscribe(() =>
-      this.filtersChange.emit(this.filterForm.value)
-    );
+    this.filterForm.valueChanges.subscribe(() => {
+      this.filtersChange.emit(this.filterForm.value);
+    });
 
     // this.filterForm.valueChanges.subscribe(this.filtersChange.emit);
     // this.filtersChange = this.filterForm.valueChanges;

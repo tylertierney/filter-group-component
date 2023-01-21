@@ -6,8 +6,8 @@
       <label>
         <input
           type="checkbox"
-          (change)="toggleValue(option.value)"
-          [checked]="isSelected(option.value)"
+          (change)="toggleValue(valueField ? option[valueField] : option)"
+          [checked]="isSelected(valueField ? option[valueField] : option)"
         />
         {{ option.value }}
       </label>
